@@ -7,7 +7,7 @@ from constants import (
 # Initialize pygame
 pygame.init()
 # Create the window
-window = pygame.display.set_mode(WINDOW_SIZE)
+window = pygame.display.set_mode(WINDOW_SIZE, pygame.RESIZABLE)
 # Condition loop for the game continue
 play = True
 
