@@ -33,10 +33,12 @@ play = True
 while play:
     # Catch user events
     for event in pygame.event.get():
+        # Catch if the user want to quit the game.
         if (event.type == pygame.QUIT or
                 event.type == pygame.KEYDOWN and
                 event.key == pygame.K_ESCAPE):
             play = False
+        # Catch if the user press another key.
         if event.type == pygame.KEYDOWN:
             # Change the position of the main character.
             main_character_position = main_character.move_character(
@@ -44,7 +46,7 @@ while play:
 
     # Show the level.
     level.show_level(window)
-    # Show the main character.
+    # Show the characters.
     main_character.show_character(window, main_character_position)
     enemy.show_character(window, enemy_position)
 

@@ -115,7 +115,7 @@ class Character:
 
     def move_character(self, key, position):
         """
-        Move the caracter on the map.
+        Move the character on the map.
         """
         if key == pygame.K_UP:
             position = (
