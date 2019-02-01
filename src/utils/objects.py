@@ -121,6 +121,9 @@ class Character:
     def show_character(self, window, position):
         """
         Show the character on the map.
+
+        :param window: pygame display object.
+        :param position: character's position.
         """
         image = self.image
         position = tuple(position)
@@ -133,6 +136,10 @@ class Character:
     def move_character(self, key, position):
         """
         Move the caracter on the map.
+
+        :param key: key that the player pressed.
+        :param position: character's current position.
+        :return position: character's next position.
         """
         if key == pygame.K_UP:
             position = (
