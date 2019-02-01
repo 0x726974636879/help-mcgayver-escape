@@ -3,7 +3,8 @@ import pygame
 from constants import (
     FLOOR_IMG,
     SPRITE_SIZE,
-    WALL_IMG
+    WALL_IMG,
+    WINDOW_SIZE
 )
 
 
@@ -114,51 +115,62 @@ class Character:
     Create a character and allow it to move.
     """
 
-    def __init__(self, image):
+    def __init__(self, image, walls):
         self.image = image
-        self.position = []
+        self.position = None
+        self.walls_position = walls
 
-    def show_character(self, window, position):
+    def show_character(self, window):
         """
         Show the character on the map.
 
         :param window: pygame display object.
-        :param position: character's position.
         """
         image = self.image
-        position = tuple(position)
         character = pygame.transform.scale(
             pygame.image.load(image).convert_alpha(),
             (SPRITE_SIZE, SPRITE_SIZE)
         )
-        window.blit(character, position)
+        window.blit(character, self.position)
 
-    def move_character(self, key, position):
+    def move_character(self, key):
         """
         Move the caracter on the map.
 
         :param key: key that the player pressed.
-        :param position: character's current position.
-        :return position: character's next position.
         """
+        previous_position = self.position
+        x = None
+        y = None
+        # Go to the good direction when the good
+        # key has been pressed.
         if key == pygame.K_UP:
-            position = (
-                position[0],
-                position[1] - SPRITE_SIZE
+            self.position = (
+                previous_position[0],
+                previous_position[1] - SPRITE_SIZE
             )
         elif key == pygame.K_RIGHT:
-            position = (
-                position[0] + SPRITE_SIZE,
-                position[1]
+            self.position = (
+                previous_position[0] + SPRITE_SIZE,
+                previous_position[1]
             )
         elif key == pygame.K_DOWN:
-            position = (
-                position[0],
-                position[1] + SPRITE_SIZE
+            self.position = (
+                previous_position[0],
+                previous_position[1] + SPRITE_SIZE
             )
         elif key == pygame.K_LEFT:
-            position = (
-                position[0] - SPRITE_SIZE,
-                position[1]
+            self.position = (
+                previous_position[0] - SPRITE_SIZE,
+                previous_position[1]
             )
-        return position
+
+        x = self.position[0]
+        y = self.position[1]
+        # If the position the player tried to go is a wall
+        # or out of the window then the player get back
+        # to the previous position.
+        if (self.position in self.walls_position or
+            x > WINDOW_SIZE[0] - SPRITE_SIZE or x < 0 or
+                y > WINDOW_SIZE[1] - SPRITE_SIZE or y < 0):
+            self.position = previous_position
