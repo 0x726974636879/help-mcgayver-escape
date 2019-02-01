@@ -19,14 +19,15 @@ window = pygame.display.set_mode(WINDOW_SIZE, pygame.RESIZABLE)
 
 # Initialize the level.
 level = Level(FILE_LEVEL)
-positions = level.get_initial_positions()
+characters_position = level.characters_position
+walls_position = level.walls_position
 
 
 # Initialize the characters.
 main_character = Character(HERO_IMG)
-main_character_position = positions['start']
+main_character_position = characters_position['start']
 enemy = Character(ENEMY_IMG)
-enemy_position = positions['end']
+enemy_position = characters_position['end']
 
 # Condition loop for the game continue
 play = True
