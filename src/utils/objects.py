@@ -9,16 +9,23 @@ from constants import (
 
 class Level:
     """
-    Create a level and show it.
+    Create a level, on analyze the file structure
+    of the level.
     """
 
     def __init__(self, file):
         self.level_structure = self.generate_level(file)
+        self.characters_position = None
+        self.walls_position = None
+        self.get_initial_positions()
 
     def generate_level(self, file):
         """
         Read a level file then return a list with
         the position of all sprites.
+
+        :param file: .txt file modeling the structure of the level.
+        :return list of positions of all object.
         """
         # Open the file.
         with open(file, 'r') as f:
@@ -39,10 +46,43 @@ class Level:
 
         return level
 
+    def get_initial_positions(self):
+        """
+        Reading the level_structure list then get
+        the initial position of all characters and walls.
+        """
+        level_structure = self.level_structure
+        characters_position = {
+            'start': None,
+            'end': None
+        }
+        walls_position = []
+
+        for y, row in enumerate(level_structure):
+            for x, letter in enumerate(row):
+                position = (
+                    SPRITE_SIZE * x,
+                    SPRITE_SIZE * y
+                )
+                if letter == 's':
+                    characters_position['start'] = position
+                elif letter == 'e':
+                    characters_position['end'] = position
+                elif letter == 'w':
+                    walls_position.append(position)
+
+        # Set the characters position
+        self.characters_position = characters_position
+
+        # Set the walls position
+        self.walls_position = walls_position
+
     def show_level(self, window):
         """
         Reading the level_structure list then show
         the level in the window game.
+
+        :param window: pygame display object.
         """
         # Initialiaze all images make them to the good size.
         floor = pygame.transform.scale(
@@ -68,33 +108,10 @@ class Level:
                 elif letter == 'w':
                     window.blit(wall, position)
 
-    def get_initial_positions(self):
-        """
-        Reading the level_structure list then get
-        the initial position of all characters.
-        """
-        level_structure = self.level_structure
-        character_positions = {
-            'start': None,
-            'end': None
-        }
-
-        for y, row in enumerate(level_structure):
-            for x, letter in enumerate(row):
-                position = (
-                    SPRITE_SIZE * x,
-                    SPRITE_SIZE * y
-                )
-                if letter == 's':
-                    character_positions['start'] = position
-                elif letter == 'e':
-                    character_positions['end'] = position
-        return character_positions
-
 
 class Character:
     """
-    Create a character.
+    Create a character and allow it to move.
     """
 
     def __init__(self, image):
