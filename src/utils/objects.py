@@ -94,11 +94,9 @@ class Level:
             pygame.image.load(WALL_IMG).convert(),
             (SPRITE_SIZE, SPRITE_SIZE)
         )
-        level_structure = self.level_structure
-
         # Run through the level structure list to put
         # each image at the good place.
-        for y, row in enumerate(level_structure):
+        for y, row in enumerate(self.level_structure):
             for x, letter in enumerate(row):
                 position = (
                     SPRITE_SIZE * x,
