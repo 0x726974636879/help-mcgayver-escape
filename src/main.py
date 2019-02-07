@@ -5,7 +5,7 @@ from constants import (
     WINDOW_SIZE
 )
 from utils.models import (
-    Character,
+    Player,
     Level
 )
 
@@ -20,14 +20,14 @@ level = Level(FILE_LEVEL)
 level.generate_level()
 level.init_items()
 level.get_initial_positions()
-characters_position = level.positions['character']
+player_start_position = level.positions['player']
 end_position = level.positions['end']
 items_position = level.positions['items']
 walls_position = level.positions['walls']
 
 # Initialize the characters.
-main_character = Character(HERO_IMG, characters_position,
-                           end_position, items_position, walls_position)
+player = Player(HERO_IMG, player_start_position,
+                end_position, items_position, walls_position)
 
 # Condition loop for the game continue
 play = True
@@ -42,18 +42,18 @@ while play:
             if (event.key == pygame.K_UP or event.key == pygame.K_RIGHT or
                     event.key == pygame.K_DOWN or event.key == pygame.K_LEFT):
                 # Change the position of the main character.
-                main_character.move_character(event.key)
+                player.move_player(event.key)
 
     # Show the level.
     level.show_level(window)
     # Show the character.
-    main_character.show_character(window)
+    player.show_player(window)
 
     # Re-initialize the display.
     pygame.display.flip()
 
     # Check if the player has all the items to stop the game.
-    if main_character.is_finish is True:
+    if player.is_finish is True:
         play = False
 
 
