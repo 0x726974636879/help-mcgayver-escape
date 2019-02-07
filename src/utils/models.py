@@ -35,6 +35,18 @@ class Level:
         }
         self.items_image = {}
 
+    def remove_item(self, item_position):
+        """
+        Remove an item in the structure's level
+        to remove the item on the map.
+
+        :param item_position: Item's position that the player
+                              has recently taken.
+        """
+        x = int(item_position[1] / SPRITE_SIZE)
+        y = int(item_position[0] / SPRITE_SIZE)
+        self.level_structure[x][y] = 'f'
+
     def generate_level(self):
         """
         Read a level file then return a list with
@@ -164,6 +176,7 @@ class Player:
             'plastic_tube': False,
             'syringe': False,
         }
+        self.item_collected = None
         self.position = start
         self.walls_position = walls
 
@@ -181,7 +194,7 @@ class Player:
 
     def move_player(self, key):
         """
-        Move the caracter on the map.
+        Move the player on the map.
 
         :param key: key that the player pressed.
         """
@@ -238,4 +251,5 @@ class Player:
             # If the player is on a item assignate True to the item.
             for name, position in self.items_position.items():
                 if self.position == position:
+                    self.item_collected = position
                     self.items[name] = True
