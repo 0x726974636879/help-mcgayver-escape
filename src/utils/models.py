@@ -23,7 +23,7 @@ class Level:
         self.file = file
         self.level_structure = []
         self.positions = {
-            'character': None,
+            'player': None,
             'end': None,
             'items': {
                 'ether': None,
@@ -58,7 +58,7 @@ class Level:
     def get_initial_positions(self):
         """
         Reading the level_structure list then get
-        the initial position of all characters and walls.
+        the initial position of all items on the map.
         """
         for y, row in enumerate(self.level_structure):
             for x, letter in enumerate(row):
@@ -67,7 +67,7 @@ class Level:
                     SPRITE_SIZE * y
                 )
                 if letter == 's':
-                    self.positions['character'] = position
+                    self.positions['player'] = position
                 elif letter == 'e':
                     self.positions['end'] = position
                 elif letter == 'w':
@@ -148,7 +148,7 @@ class Level:
         )
 
 
-class Character:
+class Player:
     """
     Create a character and allow it to move.
     """
@@ -167,19 +167,19 @@ class Character:
         self.position = start
         self.walls_position = walls
 
-    def show_character(self, window):
+    def show_player(self, window):
         """
         Show the character on the map.
 
         :param window: pygame display object.
         """
-        character = pygame.transform.scale(
+        player = pygame.transform.scale(
             pygame.image.load(self.image).convert_alpha(),
             (SPRITE_SIZE, SPRITE_SIZE)
         )
-        window.blit(character, self.position)
+        window.blit(player, self.position)
 
-    def move_character(self, key):
+    def move_player(self, key):
         """
         Move the caracter on the map.
 
