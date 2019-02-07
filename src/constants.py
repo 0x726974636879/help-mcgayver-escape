@@ -15,7 +15,6 @@ WALL_IMG = 'images/wall_1.png'
 #############
 FILE_LEVEL = 'levels/level_1.txt'
 
-
 ############
 # Others
 ############
