@@ -43,7 +43,11 @@ while play:
                     event.key == pygame.K_DOWN or event.key == pygame.K_LEFT):
                 # Change the position of the main character.
                 player.move_player(event.key)
-
+                # Check if we have some item to remove in the structure
+                if player.recently_collected is not None:
+                    item_position = player.recently_collected
+                    level.remove_item(item_position)
+                    player.recently_collected = None
     # Show the level.
     level.show_level(window)
     # Show the character.
