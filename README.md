@@ -1,4 +1,4 @@
-# amase
+# Aidez McGayver à s'échapper.
 
 It's a school project named "Help McGayver to escape".
 
