@@ -1,16 +1,5 @@
 import pygame
-
-from constants import (
-    ENEMY_IMG,
-    ETHER_IMG,
-    FLOOR_IMG,
-    NEEDLE_IMG,
-    PLASTIC_TUBE_IMG,
-    SPRITE_SIZE,
-    SYRINGE_IMG,
-    WALL_IMG,
-    WINDOW_SIZE
-)
+from constants import *
 
 
 class Level:

@@ -4,10 +4,7 @@ from constants import (
     HERO_IMG,
     WINDOW_SIZE
 )
-from utils.models import (
-    Player,
-    Level
-)
+from utils.models import *
 
 # Initialize pygame
 pygame.init()
