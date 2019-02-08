@@ -1,6 +1,7 @@
 # Aidez McGayver à s'échapper.
 
 It's a school project named "Help McGayver to escape".
+
 Requirements :
 - python 3.6
 - Pygame 1.9.4
