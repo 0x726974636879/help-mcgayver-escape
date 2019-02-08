@@ -13,7 +13,7 @@ WALL_IMG = 'images/wall_1.png'
 #############
 # Level
 #############
-FILE_LEVEL = 'levels/level_1.txt'
+FILE_LEVEL = 'levels/level_2.txt'
 
 ############
 # Others
