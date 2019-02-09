@@ -1,6 +1,7 @@
 #############
 # Images path
 #############
+BACKGROUNG_IMG = 'images/background_img.png'
 ENEMY_IMG = 'images/Gardien.png'
 ETHER_IMG = 'images/ether.png'
 FLOOR_IMG = 'images/floor_1.png'
