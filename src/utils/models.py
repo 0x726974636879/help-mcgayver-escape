@@ -67,8 +67,6 @@ class Level:
             self.level_structure[x][y] = str(counter)
             floors_position.remove(floors_position[random_position])
 
-        print(self.level_structure)
-
     def get_initial_positions(self):
         """
         Reading the level_structure list then get
