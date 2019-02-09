@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 from constants import *
 
 
@@ -18,7 +19,6 @@ class Level:
                 'ether': None,
                 'needle': None,
                 'plastic_tube': None,
-                'syringe': None,
             },
             'walls': []
         }
@@ -41,20 +41,33 @@ class Level:
         Read a level file then return a list with
         the position of all sprites.
         """
+        # Floor list
+        floors_position = []
         # Open the file.
         with open(self.file, 'r') as f:
-            for row in f:
+            for x, row in enumerate(f):
                 # List of a row.
                 row_level = []
-                counter = 0
-                while (row[counter] != '\n'):
+                y = 0
+                while (row[y] != '\n'):
                     # Catch the letter.
-                    letter = row[counter]
+                    letter = row[y]
+                    if letter == 'f':
+                        floors_position.append([x, y])
                     # Add the letter to the row_level.
                     row_level.append(letter)
-                    counter += 1
+                    y += 1
                 # Add the whole row to the level list.
                 self.level_structure.append(row_level)
+
+        # Put the items on random places
+        for counter, i in enumerate(range(5)):
+            random_position = randint(0, len(floors_position))
+            x, y = floors_position[random_position]
+            self.level_structure[x][y] = str(counter)
+            floors_position.remove(floors_position[random_position])
+
+        print(self.level_structure)
 
     def get_initial_positions(self):
         """
@@ -67,20 +80,18 @@ class Level:
                     SPRITE_SIZE * x,
                     SPRITE_SIZE * y
                 )
-                if letter == 's':
+                if letter == '0':
                     self.positions['player'] = position
-                elif letter == 'e':
+                elif letter == '1':
+                    self.positions['items']['plastic_tube'] = position
+                elif letter == '2':
+                    self.positions['items']['ether'] = position
+                elif letter == '3':
+                    self.positions['items']['needle'] = position
+                elif letter == '4':
                     self.positions['end'] = position
                 elif letter == 'w':
                     self.positions['walls'].append(position)
-                elif letter == '1':
-                    self.positions['items']['ether'] = position
-                elif letter == '2':
-                    self.positions['items']['needle'] = position
-                elif letter == '3':
-                    self.positions['items']['plastic_tube'] = position
-                elif letter == '4':
-                    self.positions['items']['syringe'] = position
 
     def show_level(self, window):
         """
@@ -97,21 +108,18 @@ class Level:
                     SPRITE_SIZE * x,
                     SPRITE_SIZE * y
                 )
-                if (letter == 'e' or letter == 'f' or letter == 's' or
-                    letter == '1' or letter == '2' or letter == '3' or
-                        letter == '4'):
+                if (letter == '0' or letter == '1' or letter == '2' or
+                        letter == '3' or letter == '4' or letter == 'f'):
                     window.blit(self.items_image['floor'], position)
-                    if letter == 'e':
-                        window.blit(self.items_image['enemy'], position)
                     if letter == '1':
-                        window.blit(self.items_image['ether'], position)
-                    elif letter == '2':
-                        window.blit(self.items_image['needle'], position)
-                    elif letter == '3':
                         window.blit(
                             self.items_image['plastic_tube'], position)
+                    elif letter == '2':
+                        window.blit(self.items_image['ether'], position)
+                    elif letter == '3':
+                        window.blit(self.items_image['needle'], position)
                     elif letter == '4':
-                        window.blit(self.items_image['syringe'], position)
+                        window.blit(self.items_image['enemy'], position)
                 elif letter == 'w':
                     window.blit(self.items_image['wall'], position)
 
@@ -139,10 +147,6 @@ class Level:
             pygame.image.load(PLASTIC_TUBE_IMG).convert_alpha(),
             (SPRITE_SIZE, SPRITE_SIZE)
         )
-        self.items_image['syringe'] = pygame.transform.scale(
-            pygame.image.load(SYRINGE_IMG).convert_alpha(),
-            (SPRITE_SIZE, SPRITE_SIZE)
-        )
         self.items_image['wall'] = pygame.transform.scale(
             pygame.image.load(WALL_IMG).convert(),
             (SPRITE_SIZE, SPRITE_SIZE)
@@ -163,7 +167,6 @@ class Player:
             'ether': False,
             'needle': False,
             'plastic_tube': False,
-            'syringe': False,
         }
         self.item_collected = None
         self.position = start
@@ -225,7 +228,7 @@ class Player:
         # finish the game.
         if (self.position == self.end_position):
             if (self.items['ether'] and self.items['needle'] and
-                    self.items['plastic_tube'] and self.items['syringe']):
+                    self.items['plastic_tube']):
                 self.is_finish = True
         # If the position the player tried to go is a wall
         # or out of the window then the player get back
