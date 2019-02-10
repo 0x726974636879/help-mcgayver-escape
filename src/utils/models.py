@@ -1,6 +1,7 @@
 import pygame
 from random import randint
 from constants import *
+from .functions import display_sentence
 
 
 class Level:
@@ -46,10 +47,12 @@ class Level:
         # Open the file.
         with open(self.file, 'r') as f:
             for x, row in enumerate(f):
+                if x > 15:
+                    x = 0
                 # List of a row.
                 row_level = []
                 y = 0
-                while (row[y] != '\n'):
+                while (y <= 15):
                     # Catch the letter.
                     letter = row[y]
                     if letter == 'f':
@@ -61,11 +64,13 @@ class Level:
                 self.level_structure.append(row_level)
 
         # Put the items on random places
-        for counter, i in enumerate(range(5)):
-            random_position = randint(0, len(floors_position))
+        for counter, i in enumerate(range(4)):
+            random_position = randint(0, len(floors_position) - 1)
             x, y = floors_position[random_position]
             self.level_structure[x][y] = str(counter)
             floors_position.remove(floors_position[random_position])
+
+        self.init_items()
 
     def get_initial_positions(self):
         """
@@ -86,7 +91,7 @@ class Level:
                     self.positions['items']['ether'] = position
                 elif letter == '3':
                     self.positions['items']['needle'] = position
-                elif letter == '4':
+                elif letter == 'e':
                     self.positions['end'] = position
                 elif letter == 'w':
                     self.positions['walls'].append(position)
@@ -107,7 +112,7 @@ class Level:
                     SPRITE_SIZE * y
                 )
                 if (letter == '0' or letter == '1' or letter == '2' or
-                        letter == '3' or letter == '4' or letter == 'f'):
+                        letter == '3' or letter == 'e' or letter == 'f'):
                     window.blit(self.items_image['floor'], position)
                     if letter == '1':
                         window.blit(
@@ -116,7 +121,7 @@ class Level:
                         window.blit(self.items_image['ether'], position)
                     elif letter == '3':
                         window.blit(self.items_image['needle'], position)
-                    elif letter == '4':
+                    elif letter == 'e':
                         window.blit(self.items_image['enemy'], position)
                 elif letter == 'w':
                     window.blit(self.items_image['wall'], position)
@@ -149,6 +154,7 @@ class Level:
             pygame.image.load(WALL_IMG).convert(),
             (SPRITE_SIZE, SPRITE_SIZE)
         )
+        self.get_initial_positions()
 
 
 class Player:
@@ -158,6 +164,7 @@ class Player:
 
     def __init__(self, image, start, end, items_position, walls):
         self.end_position = end
+        self.is_die = False
         self.is_finish = False
         self.image = image
         self.items_position = items_position
@@ -228,6 +235,8 @@ class Player:
             if (self.items['ether'] and self.items['needle'] and
                     self.items['plastic_tube']):
                 self.is_finish = True
+            else:
+                self.is_die = True
         # If the position the player tried to go is a wall
         # or out of the window then the player get back
         # to the previous position.
@@ -243,3 +252,17 @@ class Player:
                 if self.position == position:
                     self.item_collected = position
                     self.items[name] = True
+
+    def check_status(self, window, play, menu):
+        """
+        Check if the game if finish or if the player died.
+
+        :param window: window that the sentences will appear.
+        """
+        if self.is_die or self.is_finish:
+            if self.is_die:
+                display_sentence(window, 'lose')
+            elif self.is_finish:
+                display_sentence(window, 'win')
+
+        return play, menu
