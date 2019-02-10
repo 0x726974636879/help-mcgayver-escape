@@ -1,16 +1,26 @@
+from random import randint
+
+floor_number = randint(1, 2)
+level_number = randint(1, 2)
+wall_number = randint(1, 2)
+
+
 #############
 # Images path
 #############
+BACKGROUNG_IMG = 'images/background_img.png'
 ENEMY_IMG = 'images/Gardien.png'
-FLOOR_IMG = 'images/floor_1.png'
+ETHER_IMG = 'images/ether.png'
+FLOOR_IMG = f'images/floor_{floor_number}.png'
 HERO_IMG = 'images/MacGyver.png'
-WALL_IMG = 'images/wall_1.png'
+PLASTIC_TUBE_IMG = 'images/tube_plastique.png'
+NEEDLE_IMG = 'images/aiguille.png'
+WALL_IMG = f'images/wall_{wall_number}.png'
 
 #############
 # Level
 #############
-FILE_LEVEL = 'levels/level_1.txt'
-
+FILE_LEVEL = f'levels/level_{level_number}.txt'
 
 ############
 # Others
