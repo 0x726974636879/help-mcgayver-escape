@@ -27,9 +27,11 @@ play = False
 while menu:
     # Catch user events.
     for event in pygame.event.get():
+        # Catch if the user want to quit the game.
         if (event.type == pygame.QUIT or
                 event.type == pygame.KEYDOWN and
                 event.key == pygame.K_ESCAPE):
+<<<<<<< HEAD
             menu = False
         elif (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN):
             # Initialize the level.
@@ -77,6 +79,22 @@ while menu:
         pygame.display.flip()
 
     pygame.time.Clock().tick(30)
+=======
+            play = False
+        # Catch if the user press another key.
+        if event.type == pygame.KEYDOWN:
+            # Change the position of the main character.
+            main_character_position = main_character.move_character(
+                event.key, main_character_position)
+
+    # Show the level.
+    level.show_level(window)
+    # Show the characters.
+    main_character.show_character(window, main_character_position)
+    enemy.show_character(window, enemy_position)
+
+    # Re-initialize the display.
+>>>>>>> 6ed989362da0ca49725b0c55efb5b43f21b27eef
     pygame.display.flip()
 
 
