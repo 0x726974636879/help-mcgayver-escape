@@ -33,4 +33,4 @@ def display_sentence(window, instance):
             window.blit(win_game, (0, WINDOW_SIZE[0] / 2))
         elif instance == 'lose':
             window.blit(lose_game, (0, WINDOW_SIZE[0] / 2))
-        window.blit(back_menu_game, (0, 60))
+        window.blit(back_menu_game, (0, 0))
