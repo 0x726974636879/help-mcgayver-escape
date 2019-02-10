@@ -5,33 +5,36 @@ from constants import (
     HERO_IMG,
     WINDOW_SIZE
 )
+from utils.functions import display_sentence
 from utils.models import *
 
-# Initialize pygame
+
+# Initialize pygame.
 pygame.init()
 
-# Create the window
+# Create the window.
 window = pygame.display.set_mode(WINDOW_SIZE, pygame.RESIZABLE)
+# Background image.
+background_menu = pygame.transform.scale(
+    pygame.image.load(BACKGROUNG_IMG).convert_alpha(),
+    WINDOW_SIZE
+)
 
-background_image = pygame.image.load(ENEMY_IMG).convert_alpha()
-
-# Condition loop for the menu
+# Condition loop for the menu.
 menu = True
-# Condition loop for the game continue
+# Condition loop for the game continue.
 play = False
 while menu:
-    # Catch user events
+    # Catch user events.
     for event in pygame.event.get():
         if (event.type == pygame.QUIT or
                 event.type == pygame.KEYDOWN and
                 event.key == pygame.K_ESCAPE):
             menu = False
-        elif event.type == pygame.K_F1:
+        elif (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN):
             # Initialize the level.
             level = Level(FILE_LEVEL)
             level.generate_level()
-            level.init_items()
-            level.get_initial_positions()
             player_start_position = level.positions['player']
             end_position = level.positions['end']
             items_position = level.positions['items']
@@ -40,23 +43,22 @@ while menu:
             # Initialize the characters.
             player = Player(HERO_IMG, player_start_position,
                             end_position, items_position, walls_position)
-            menu = False
-            play = True
-        window.blit(BACKGROUNG_IMG, (0, 0))
-        pygame.display.flip()
+            play, menu = True, False
+        window.blit(background_menu, (0, 0))
+        display_sentence(window, 'start')
 
     while play:
-        # Catch user events
+        # Catch user events.
         for event in pygame.event.get():
-            if (event.type == pygame.QUIT or
-                    event.type == pygame.KEYDOWN and
-                    event.key == pygame.K_ESCAPE):
-                play = False
-                menu = True
-            if event.type == pygame.KEYDOWN:
-                if (event.key == pygame.K_UP or event.key == pygame.K_RIGHT or
-                        event.key == pygame.K_DOWN or
-                        event.key == pygame.K_LEFT):
+            if (event.type == pygame.QUIT):
+                play, menu = False, False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    play, menu = False, True
+                elif (event.key == pygame.K_UP or
+                      event.key == pygame.K_RIGHT or
+                      event.key == pygame.K_DOWN or
+                      event.key == pygame.K_LEFT):
                     # Change the position of the main character.
                     player.move_player(event.key)
                     # Check if we have some item to remove in the structure
@@ -68,10 +70,14 @@ while menu:
         level.show_level(window)
         # Show the character.
         player.show_player(window)
+        # Check if the game is ended.
+        play, menu = player.check_status(window, play, menu)
         # Re-initialize the display.
+        pygame.time.Clock().tick(30)
         pygame.display.flip()
-        # Check if the player has all the items to stop the game.
-        if player.is_finish is True:
-            play = False
+
+    pygame.time.Clock().tick(30)
+    pygame.display.flip()
+
 
 pygame.quit()
