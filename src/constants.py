@@ -2,7 +2,7 @@ from random import randint
 
 floor_number = randint(1, 2)
 level_number = randint(1, 2)
-wall_number = randint(1, 2)
+wall_number = randint(1, 2, 3)
 
 
 #############
