@@ -51,10 +51,15 @@ while menu:
         # Catch user events.
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
-                play, menu = False, False
+                menu, play = False, False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     play, menu = False, True
+                elif (event.key == pygame.K_i):
+                    if player.should_show_pocket:
+                        player.should_show_pocket = False
+                    else:
+                        player.should_show_pocket = True
                 elif (event.key == pygame.K_UP or
                       event.key == pygame.K_RIGHT or
                       event.key == pygame.K_DOWN or
@@ -70,8 +75,10 @@ while menu:
         level.show_level(window)
         # Show the character.
         player.show_player(window)
+        # Show all items collected
+        player.show_pocket(window)
         # Check if the game is ended.
-        play, menu = player.check_status(window, play, menu)
+        player.check_status(window)
         # Re-initialize the display.
         pygame.time.Clock().tick(30)
         pygame.display.flip()

@@ -1,10 +1,11 @@
 import pygame
 from constants import (
+    SPRITE_SIZE,
     WINDOW_SIZE
 )
 
 
-def display_sentence(window, instance):
+def display_sentence(window, instance, extra=None):
     """
     Display the good menu (start menu, win menu or lose menu).
 
@@ -12,6 +13,7 @@ def display_sentence(window, instance):
     :param instance: Is there the start menu or the win menu.
     """
     # Initialize fonts.
+    small_font = pygame.font.SysFont("monospace", 20)
     little_font = pygame.font.SysFont("monospace", 45)
     big_font = pygame.font.SysFont("monospace", 80)
     # Initialize the color.null
@@ -33,3 +35,8 @@ def display_sentence(window, instance):
             lose_game = big_font.render("You LOSE", 1, red_color)
             window.blit(lose_game, (0, WINDOW_SIZE[0] / 2))
         window.blit(back_menu_game, (0, 0))
+    elif instance == 'pocket':
+        for counter, item in enumerate(extra):
+            pocket = small_font.render(item, 1, white_color)
+            window.blit(pocket, (WINDOW_SIZE[1] - SPRITE_SIZE * 3,
+                                 counter * 10))

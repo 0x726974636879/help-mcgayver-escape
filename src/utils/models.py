@@ -164,18 +164,34 @@ class Player:
 
     def __init__(self, image, start, end, items_position, walls):
         self.end_position = end
+        self.image = image
         self.is_die = False
         self.is_finish = False
-        self.image = image
-        self.items_position = items_position
         self.items = {
             'ether': False,
             'needle': False,
             'plastic_tube': False,
         }
         self.item_collected = None
+        self.items_position = items_position
         self.position = start
+        self.should_show_pocket = False
         self.walls_position = walls
+
+    def show_pocket(self, window):
+        """
+        Show all the item collected.
+        """
+        if self.should_show_pocket:
+            pocket = ['Your pocket:']
+            if self.items['ether']:
+                pocket.append('ether')
+            if self.items['needle']:
+                pocket.append('needle')
+            if self.items['plastic_tube']:
+                pocket.append('plastic tube')
+
+            display_sentence(window, 'pocket', pocket)
 
     def show_player(self, window):
         """
@@ -253,7 +269,7 @@ class Player:
                     self.item_collected = position
                     self.items[name] = True
 
-    def check_status(self, window, play, menu):
+    def check_status(self, window):
         """
         Check if the game if finish or if the player died.
 
@@ -264,5 +280,3 @@ class Player:
                 display_sentence(window, 'lose')
             elif self.is_finish:
                 display_sentence(window, 'win')
-
-        return play, menu
