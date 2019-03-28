@@ -14,7 +14,7 @@ def display_sentence(window, instance, extra=None):
     """
     # Initialize fonts.
     small_font = pygame.font.SysFont("monospace", 20)
-    little_font = pygame.font.SysFont("monospace", 45)
+    little_font = pygame.font.SysFont("monospace", 40)
     big_font = pygame.font.SysFont("monospace", 80)
     # Initialize the color.null
     white_color = (255, 255, 255)
@@ -39,4 +39,4 @@ def display_sentence(window, instance, extra=None):
         for counter, item in enumerate(extra):
             pocket = small_font.render(item, 1, white_color)
             window.blit(pocket, (WINDOW_SIZE[1] - SPRITE_SIZE * 3,
-                                 counter * 20))
+                                 counter * 15))
