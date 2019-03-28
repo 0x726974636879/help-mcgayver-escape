@@ -190,6 +190,7 @@ class Player:
                 pocket.append('needle')
             if self.items['plastic_tube']:
                 pocket.append('plastic tube')
+            pocket.append(f'{len(pocket) - 1} item(s)')
 
             display_sentence(window, 'pocket', pocket)
 
